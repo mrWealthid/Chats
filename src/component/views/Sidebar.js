@@ -1,28 +1,46 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import { useChatContext } from '../Context/ChatContext';
+import SidebarOptions from './SidebarOptions';
+import { FaPlusCircle } from 'react-icons/fa';
+import { db } from '../../firebase-config';
+import { collection, addDoc } from 'firebase/firestore';
 
-const Sidebar = ({ id, title, image_url: img }) => {
+const Sidebar = () => {
+  const { channels } = useChatContext();
+
   const styles = {
     color: 'grey',
     background: ' #fbdb89',
     width: '100%',
   };
+
+  const addChannel = async () => {
+    const channelName = prompt('Please enter the Channel name');
+
+    if (channelName) {
+      await addDoc(collection(db, 'rooms'), {
+        name: channelName,
+        messages: [],
+      });
+
+      //   db.collection('rooms').add({
+      //     name: channelName,
+      //   });
+    }
+  };
   return (
-    <section className='flex flex-1 gap-2 items-center hover:bg-gray-100'>
-      <>
-        <img
-          className=' w-8 h-8 object-cover items-center flex justify-center cursor-pointer rounded-full overflow-hidden App'
-          src={img}
-          alt={title}
-        />
-      </>
-      <NavLink
-        activeStyle={styles}
-        to={`/${id}`}
-        className=' block text-gray-800 animate-slideIn text-sm '
+    <section className='flex flex-col gap-3'>
+      <p
+        onClick={addChannel}
+        className='flex gap-2 cursor-pointer items-center'
       >
-        <p className='py-3 px-2'> {title?.split('(')[0]}</p>
-      </NavLink>
+        {' '}
+        # Add Channel <FaPlusCircle />{' '}
+      </p>
+      {channels.map((channel) => (
+        <SidebarOptions {...channel} key={channel.id} />
+      ))}
     </section>
   );
 };

@@ -8,7 +8,7 @@ function App() {
     <div className='App min-h-screen justify-center py-8 items-center flex'>
       <Switch>
         <Route exact path='/' component={Home} />
-        <Route path='/:id' component={Home} />
+        <Route path='/:id/:roomId' component={Home} />
         {/* <Route path='/About' component={About} />
         <Route path='/Signup' component={Signup} /> */}
       </Switch>

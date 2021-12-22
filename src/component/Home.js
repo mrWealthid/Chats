@@ -27,7 +27,7 @@ const Home = () => {
         <section className='glass21 w-2/5 min-h-screen py-3 rounded-2xl'>
           <Sidebar />
         </section>
-        <section className='flex w-full min-h-screen '>
+        <section className='flex w-full flex-col min-h-screen '>
           <ChatContainer />
         </section>
       </section>

@@ -5,8 +5,8 @@
 @tailwind utilities;
 
 :root {
-  --color1: #fbdb89;
-  --color2: rgb(244, 138, 130);
+  --color1: rgba(7, 7, 7, 0.3);
+  --color2: rgba(7, 7, 7, 1);
   /* --header-font: 'Ranchers', sans-serif; */
   --shadow: 0 4px 8px 0 rgb(243, 239, 239), 0 6px 20px rgb(243, 239, 239);
 }
@@ -43,7 +43,7 @@
 }
 
 .btn {
-  background: var(--color1);
+  background: blue;
 }
 circle {
   fill: var(--color2);
