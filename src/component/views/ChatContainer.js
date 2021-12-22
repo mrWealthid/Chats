@@ -19,7 +19,7 @@ import { useChatContext } from '../Context/ChatContext';
 const ChatContainer = () => {
   const { roomId } = useParams();
 
-  const { messages } = useChatContext();
+  const { messages, users } = useChatContext();
 
   // const [roomId, setRoomId] = useState('');
   // const [roomData, setRoomData] = useState({
@@ -64,7 +64,7 @@ const ChatContainer = () => {
     console.log(messages);
     const docRef = doc(db, 'rooms', roomId);
 
-    const newObj = { name: 'Wealth', message: messages };
+    const newObj = { name: users.displayName, message: messages };
 
     const newMessage = [...roomData, newObj];
 

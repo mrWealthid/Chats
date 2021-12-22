@@ -10,19 +10,23 @@ import { RESULT_PER_PAGE, START_PAGE } from './config';
 import Topbar from './Topbar';
 import { AiOutlineArrowRight, AiOutlineArrowLeft } from 'react-icons/ai';
 const Home = () => {
-  // const history = useHistory();
+  const [show, setShow] = useState(false);
+  const handlePopup = (e) => {
+    const btn = e.target.closest('.Pop');
 
-  //Pagination features
-  //We are on page One and there are other pages
-  //We are  on page One and there are no other pages
-
-  //last page
-
-  //other pages
+    if (e.target.classList.contains('Pop')) {
+      setShow(!show);
+    } else {
+      setShow(false);
+    }
+  };
 
   return (
-    <div className='glass21 w-11/12 flex flex-col relative rounded-lg'>
-      <Topbar />
+    <div
+      className='glass21 w-11/12 flex flex-col relative rounded-lg'
+      onClick={handlePopup}
+    >
+      <Topbar show={show} />
       <section className='flex'>
         <section className='glass21 w-2/5 min-h-screen py-3 rounded-2xl'>
           <Sidebar />
