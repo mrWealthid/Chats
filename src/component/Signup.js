@@ -15,6 +15,7 @@ const Signup = () => {
     type,
     msg,
     buttonLoader,
+    handlerImage,
   } = useChatContext();
 
   return (
@@ -22,10 +23,10 @@ const Signup = () => {
       <div className='h-screen flex flex-col  justify-center items-center'>
         <div className='w-8/12    md:w-8/12  flex flex-col max-w-xl gap-2  transition ease-in-out duration-500'>
           <form
-            className='py-6 px-8 flex rounded-lg cap bg-contain animate-slideOut shadow-2xl flex-col gap-2 lg:gap-2 glass21 '
+            className='py-6 px-8 flex rounded-lg cap bg-contain animate-slideOut shadow-2xl flex-col gap-2 lg:gap-2  '
             onSubmit={handleSignup}
           >
-            <p className='text-xl text-center mb-3'> Sign Up</p>
+            <p className='text-xl text-center text-blue-600  mb-3'> Sign Up</p>
             {type ? (
               <p className='text-red-900  animate-slideIn p-2 rounded'>{msg}</p>
             ) : null}
@@ -66,6 +67,15 @@ const Signup = () => {
                  text-black rounded-lg focus:ring-2  text-sm focus:border-transparent'
               />
             </div>
+            <input
+              type='file'
+              // placeholder='Password'
+              // value={register.password}
+              // name='password'
+              onChange={handlerImage}
+              className='my-2 block w-full py-2 px-2  focus:outline-none border-none focus:ring-blue-500 
+                 text-black rounded-lg focus:ring-2  text-sm focus:border-transparent'
+            />
             <div className='w-full flex  justify-end'>
               <button
                 className={` ${
@@ -81,10 +91,10 @@ const Signup = () => {
                 )}
               </button>
             </div>
-            <p className=' text-sm text-center flex gap-2 justify-center'>
+            <p className=' text-sm text-center text-gray-300 flex gap-2 justify-center'>
               {' '}
               Already Have An Account
-              <Link className='text-blue-700  text-sm' to='/login'>
+              <Link className='text-blue-600  text-sm' to='/login'>
                 Login
               </Link>{' '}
             </p>{' '}

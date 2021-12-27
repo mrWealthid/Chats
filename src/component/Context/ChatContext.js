@@ -1,19 +1,15 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 
+import { onSnapshot, collection, updateDoc, doc } from 'firebase/firestore';
 import {
-  doc,
-  setDoc,
-  onSnapshot,
-  collection,
-  orderBy,
-  query,
-  serverTimestamp,
-  updateDoc,
-  deleteDoc,
-  addDoc,
-} from 'firebase/firestore';
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+} from 'firebase/storage';
 
-import { auth, db } from '../../firebase-config';
+import { auth, db, storage } from '../../firebase-config';
+
 import {
   onAuthStateChanged,
   createUserWithEmailAndPassword,
@@ -26,29 +22,34 @@ import { useHistory } from 'react-router-dom';
 const ChatContext = createContext();
 
 const ChatProvider = ({ children }) => {
-  const collectionRef = collection(db, 'rooms');
-
   const [channels, setChannels] = useState([]);
   const [users, setUsers] = useState({});
 
   const history = useHistory();
 
   useEffect(() => {
-    console.log(channels);
     const collectionRef = collection(db, 'rooms');
     onSnapshot(collectionRef, (snapshot) => {
       setChannels(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     });
-    console.log(channels);
   }, []);
 
   //Messaging
 
   const [messages, setMessages] = useState('');
+  const [typing, setTyping] = useState(false);
 
   const handleChange = (e) => {
     setMessages(e.target.value);
   };
+
+  useEffect(() => {
+    if (messages !== '') {
+      setTyping(true);
+    } else {
+      setTyping(false);
+    }
+  }, [messages]);
 
   //Auth
 
@@ -66,6 +67,8 @@ const ChatProvider = ({ children }) => {
     email: '',
     password: '',
   });
+
+  const [url, setUrl] = useState('');
 
   const [login, setLogin] = useState({
     email: '',
@@ -135,9 +138,17 @@ const ChatProvider = ({ children }) => {
 
   //Signup
 
+  const [progress, setProgress] = useState(0);
+
   const handleChangeRegister = (e) => {
     const { name, value } = e.target;
     setRegister({ ...register, [name]: value });
+  };
+
+  const handlerImage = (e) => {
+    const file = e.target.files[0];
+    console.log(file);
+    uploadFiles(file);
   };
 
   const handleSignup = async (e) => {
@@ -153,9 +164,13 @@ const ChatProvider = ({ children }) => {
       );
 
       console.log(data);
+      console.log(data.user);
 
       //This is to include displayName and PhotorUrl
-      await updateProfile(data.user, { displayName: register.firstname });
+      await updateProfile(data.user, {
+        displayName: register.firstname,
+        photoURL: url,
+      });
 
       history.push('/');
 
@@ -163,6 +178,7 @@ const ChatProvider = ({ children }) => {
         email: '',
         password: '',
       });
+      setUrl('');
     } catch (error) {
       errorChecker(error);
       console.log(error);
@@ -170,6 +186,33 @@ const ChatProvider = ({ children }) => {
       setConfirmFields(true);
       setButtonLoader(false);
     }
+  };
+
+  // //using firestorage
+
+  const uploadFiles = (file) => {
+    //
+    if (!file) return;
+    const storageRef = ref(storage, `files/${file.name}`);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    uploadTask.on(
+      'state_changed',
+      (snapshot) => {
+        const prog = Math.round(
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        );
+        setProgress(prog);
+        console.log(prog);
+      },
+      (error) => console.log(error),
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          console.log('File available at', downloadURL);
+          setUrl(downloadURL);
+        });
+      }
+    );
   };
 
   //Login
@@ -213,20 +256,72 @@ const ChatProvider = ({ children }) => {
     history.push('/login');
   };
 
-  //   addDoc(colRef, {
-  //     title: addBookForm.title.value,
-  //     author: addBookForm.author.value,
-  //     createdAt: serverTimestamp(),
-  //   }).then(() => {
-  //     addBookForm.reset();
-  //   });
-  // });
+  const [roomID, setRoomID] = useState('');
 
-  //   useEffect(() => {
-  //     onSnapshot(collection(db, 'Rooms'), (snapshot) => {
-  //       console.log(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-  //     });
-  //   }, []);
+  const [roomDetails, setRoomDetails] = useState('');
+
+  const [roomData, setRoomData] = useState([]);
+
+  const [loading, setLoading] = useState(false);
+
+  // const collectionsRef = collection(db, 'rooms');
+
+  // const docRef = doc(db, 'rooms', roomId);
+
+  const sendMessage = async (e) => {
+    e.preventDefault();
+    try {
+      console.log(messages);
+      const docRef = doc(db, 'rooms', roomID);
+
+      const newObj = {
+        name: users.displayName,
+        userId: users.uid,
+        photoURL: users.photoURL,
+        message: messages,
+        timeStamp: new Date().toISOString(),
+        messageId: Date.now(),
+      };
+
+      const newMessage = [...roomData, newObj];
+
+      await updateDoc(docRef, {
+        messages: newMessage,
+      });
+
+      setMessages('');
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    (async () => {
+      try {
+        if (!roomID) return false;
+        setLoading(true);
+        // const docRef = doc(db, 'rooms', roomId);
+
+        // const docSnap = await getDoc(docRef);
+
+        onSnapshot(doc(db, 'rooms', roomID), (doc) => {
+          setRoomData(doc.data().messages);
+          setRoomDetails(doc.data().name);
+        });
+
+        // if (docSnap.exists()) console.log(docSnap.data());
+
+        // setRoomData({
+        //   messages: [...roomData.messages, messages],
+        // });
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, [roomID]);
+
   return (
     <ChatContext.Provider
       value={{
@@ -247,6 +342,17 @@ const ChatProvider = ({ children }) => {
         handleLogout,
         handleLogin,
         buttonLoader,
+        alert,
+        typing,
+        progress,
+        setProgress,
+        handlerImage,
+        setMessages,
+        setRoomID,
+        loading,
+        sendMessage,
+        roomData,
+        roomDetails,
       }}
     >
       {children}

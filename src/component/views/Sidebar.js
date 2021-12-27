@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import React from 'react';
+
 import { useChatContext } from '../Context/ChatContext';
 import SidebarOptions from './SidebarOptions';
 import { FaPlusCircle } from 'react-icons/fa';
@@ -8,12 +8,6 @@ import { collection, addDoc } from 'firebase/firestore';
 
 const Sidebar = () => {
   const { channels } = useChatContext();
-
-  const styles = {
-    color: 'grey',
-    background: ' #fbdb89',
-    width: '100%',
-  };
 
   const addChannel = async () => {
     const channelName = prompt('Please enter the Channel name');
@@ -30,10 +24,10 @@ const Sidebar = () => {
     }
   };
   return (
-    <section className='flex flex-col gap-3'>
+    <section className='flex  flex-col gap-3'>
       <p
         onClick={addChannel}
-        className='flex gap-2 cursor-pointer items-center'
+        className='flex gap-2 p-2 cursor-pointer items-center'
       >
         {' '}
         # Add Channel <FaPlusCircle />{' '}

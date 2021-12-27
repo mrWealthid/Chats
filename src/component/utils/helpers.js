@@ -46,4 +46,14 @@ const getRecipes = async (search) => {
   }
   //   const resp = await axios(`${API_URL}?search=${search}`);
 };
+
+export const convertTime = (time) => {
+  const options = {
+    hour: 'numeric',
+    minute: 'numeric',
+  };
+  const locale = navigator.language;
+
+  return Intl.DateTimeFormat(locale, options).format(new Date(time));
+};
 export { getRecipe, getRecipes };

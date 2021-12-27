@@ -4,6 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 import Login from './component/Login';
 import Signup from './component/Signup';
 import PrivateRoute from './component/PrivateRoute';
+import Files from './component/Files';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path='/:id/:roomId' component={Home} />
         <Route path='/Login' component={Login} />
         <Route path='/Signup' component={Signup} />
+        <Route path='/Files' component={Files} />
       </Switch>
     </div>
   );

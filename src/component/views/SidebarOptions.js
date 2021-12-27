@@ -1,26 +1,21 @@
 import React from 'react';
-import { useHistory, NavLink } from 'react-router-dom';
-import { db } from '../../firebase-config';
+import { NavLink } from 'react-router-dom';
 
 const SidebarOptions = ({ name, title, id }) => {
-  //   const history = useHistory();
-  //   const selectChannel = () => {
-  //     if (id) {
-  //       history.push(`/room/${id}`);
-  //     } else {
-  //       history.push(title);
-  //     }
-  //   };
-
+  const styles = {
+    color: 'midnightBlue',
+    background: 'gray',
+    width: '100%',
+  };
   return (
     <div>
-      <div>
-        <p className='flex '>
-          <NavLink className='block space-x-2' to={`/room/${id}`}>
-            # {name}
-          </NavLink>
-        </p>
-      </div>
+      <NavLink
+        activeStyle={styles}
+        className='block py-2 px-2 space-x-2'
+        to={`/room/${id}`}
+      >
+        # {name}
+      </NavLink>
     </div>
   );
 };

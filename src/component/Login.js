@@ -23,7 +23,7 @@ const Login = () => {
             className='py-6 px-8 cap  bg-contain rounded-xl shadow-2xl animate-slideIn flex flex-col gap-2 lg:gap-4 items-center glass2 '
             onSubmit={handleLogin}
           >
-            <p className='text-xl text-gray-800'> Login</p>
+            <p className='text-xl text-blue-600 '> Login</p>
 
             {type ? (
               <p className='text-red-800 animate-slideIn p-2 '>{msg}</p>
@@ -64,7 +64,7 @@ const Login = () => {
             Forgot Password{' '}
           </Link> */}
 
-            <p className=' flex gap-3 text-sm text-gray-800'>
+            <p className=' flex gap-3 text-sm text-gray-300'>
               Need An Account {''}{' '}
               <Link className='text-blue-600 text-sm' to='/Signup'>
                 Sign up
