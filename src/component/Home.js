@@ -19,15 +19,15 @@ const Home = () => {
 
   return (
     <div
-      className='glass21 w-10/12 flex flex-col relative rounded-lg'
+      className='glass21 w-full flex flex-col  relative  rounded-lg '
       onClick={handlePopup}
     >
       <Topbar show={show} />
-      <section className='flex'>
-        <section className='glass21 w-2/5 min-h-screen py-3 rounded-2xl'>
+      <section className='flex '>
+        <section className='glass21 w-2/5  py-3 rounded-2xl sticky h-full top-3 '>
           <Sidebar />
         </section>
-        <section className='flex w-full flex-col min-h-screen '>
+        <section className='flex w-full flex-col min-h-screen'>
           <ChatContainer />
         </section>
       </section>

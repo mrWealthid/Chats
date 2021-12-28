@@ -8,7 +8,7 @@ import Files from './component/Files';
 
 function App() {
   return (
-    <div className='App min-h-screen justify-center py-8 items-center flex'>
+    <div className='App justify-center items-center flex'>
       <Switch>
         <PrivateRoute exact path='/' component={Home} />
         <Route path='/:id/:roomId' component={Home} />

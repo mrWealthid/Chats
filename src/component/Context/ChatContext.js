@@ -256,72 +256,6 @@ const ChatProvider = ({ children }) => {
     history.push('/login');
   };
 
-  const [roomID, setRoomID] = useState('');
-
-  const [roomDetails, setRoomDetails] = useState('');
-
-  const [roomData, setRoomData] = useState([]);
-
-  const [loading, setLoading] = useState(false);
-
-  // const collectionsRef = collection(db, 'rooms');
-
-  // const docRef = doc(db, 'rooms', roomId);
-
-  const sendMessage = async (e) => {
-    e.preventDefault();
-    try {
-      console.log(messages);
-      const docRef = doc(db, 'rooms', roomID);
-
-      const newObj = {
-        name: users.displayName,
-        userId: users.uid,
-        photoURL: users.photoURL,
-        message: messages,
-        timeStamp: new Date().toISOString(),
-        messageId: Date.now(),
-      };
-
-      const newMessage = [...roomData, newObj];
-
-      await updateDoc(docRef, {
-        messages: newMessage,
-      });
-
-      setMessages('');
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    (async () => {
-      try {
-        if (!roomID) return false;
-        setLoading(true);
-        // const docRef = doc(db, 'rooms', roomId);
-
-        // const docSnap = await getDoc(docRef);
-
-        onSnapshot(doc(db, 'rooms', roomID), (doc) => {
-          setRoomData(doc.data().messages);
-          setRoomDetails(doc.data().name);
-        });
-
-        // if (docSnap.exists()) console.log(docSnap.data());
-
-        // setRoomData({
-        //   messages: [...roomData.messages, messages],
-        // });
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, [roomID]);
-
   return (
     <ChatContext.Provider
       value={{
@@ -348,11 +282,11 @@ const ChatProvider = ({ children }) => {
         setProgress,
         handlerImage,
         setMessages,
-        setRoomID,
-        loading,
-        sendMessage,
-        roomData,
-        roomDetails,
+        // setRoomID,
+        // loading,
+        // sendMessage,
+        // roomData,
+        // roomDetails,
       }}
     >
       {children}
