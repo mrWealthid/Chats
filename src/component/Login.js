@@ -16,7 +16,7 @@ const Login = () => {
     msg,
   } = useChatContext();
   return (
-    <div className='min-h-screen w-full  Apps flex flex-col'>
+    <div className='min-h-screen w-full  App flex flex-col'>
       <div className='h-screen  flex flex-col  justify-center items-center'>
         <div className='w-10/12 sm:w-8/12 md:w-5/12 lg:w-4/12 flex flex-col max-w-2xl  gap-1  transition ease-in-out duration-500'>
           <form

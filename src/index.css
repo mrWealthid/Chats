@@ -6,7 +6,7 @@
 
 :root {
   --color1: rgba(7, 7, 7, 0.3);
-  --color2: rgba(7, 7, 7, 1);
+  --color2: whitesmoke;
   /* --header-font: 'Ranchers', sans-serif; */
   --shadow: 0 4px 8px 0 rgb(243, 239, 239), 0 6px 20px rgb(243, 239, 239);
 }
