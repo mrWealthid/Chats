@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 const Files = () => {
-  const [progress, setProgress] = useState(0);
+  const [progress] = useState(0);
   const formHandler = (e) => {
     e.preventDefault();
     const file = e.target[0].files[0];

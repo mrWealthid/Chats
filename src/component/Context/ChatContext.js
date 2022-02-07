@@ -1,8 +1,8 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 
-import { onSnapshot, collection, updateDoc, doc } from 'firebase/firestore';
+import { onSnapshot, collection} from 'firebase/firestore';
 import {
-  getStorage,
+
   ref,
   uploadBytesResumable,
   getDownloadURL,
